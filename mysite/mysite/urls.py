@@ -15,16 +15,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+from .views import CustomTokenObtainPairView
 from .settings import MEDIA_ROOT
 from .settings import MEDIA_URL
-from .settings import STATIC_URL
-from .settings import STATIC_ROOT
-from .settings import DEBUG
 from django.conf.urls.static import static
+
+admin.site.site_header = 'Face Recognition'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),  
+    path('faces/', include('recognition.urls')),
+    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    #path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 print(MEDIA_ROOT, MEDIA_ROOT,  static(MEDIA_URL, document_root=MEDIA_ROOT))

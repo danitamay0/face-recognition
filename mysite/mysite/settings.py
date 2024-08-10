@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -37,14 +38,30 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "corsheaders",
     'clients',
-    'recognition'
+    'recognition',
+    'rest_framework',
+    'rest_framework_simplejwt'
+
 
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME"  : timedelta(days=1),
+    "TOKEN_LIFETIME"  : timedelta(days=1),
+    "TOKEN_REFRESH_LIFETIME"  : timedelta(days=1),
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -71,7 +88,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
-CSRF_TRUSTED_ORIGINS = ['https://8000-idx-face-app-1720115970996.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev','https://*.127.0.0.1']
+#CSRF_TRUSTED_ORIGINS = ['https://8000-idx-face-app-1720115970996.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev','https://*.127.0.0.1' , 'http://localhost:5173']
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -106,9 +125,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "es"
 
-TIME_ZONE = 'UTC'
+
+TIME_ZONE = "America/Bogota"
 
 USE_I18N = True
 
@@ -124,6 +144,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Si aún no tienes configurado STATICFILES_DIRS, agrégalo
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -131,3 +152,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Media files (Uploaded files)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MODEL_ROOT = os.path.join(BASE_DIR, 'models/')
+
+
+# Agregar el CSS personalizado al panel de administración
+ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
+ADMIN_CSS = {
+    'all': ('admin_custom.css',),
+}
