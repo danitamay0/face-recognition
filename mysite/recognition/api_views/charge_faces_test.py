@@ -46,7 +46,7 @@ def charge_faces_test(request):
             name = person.replace(".jpeg", " TRAINING")
             if face_encodings:
                 
-                face = Face(client= client_id, name=name )
+                face = Face(client_id= client_id, name=name )
                 face.save()
                 
                 with open(image_path, 'rb') as img_file:
