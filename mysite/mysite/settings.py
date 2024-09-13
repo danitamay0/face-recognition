@@ -93,11 +93,11 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 #CSRF_TRUSTED_ORIGINS = ['https://8000-idx-face-app-1720115970996.cluster-ux5mmlia3zhhask7riihruxydo.cloudworkstations.dev','https://*.127.0.0.1' , 'http://localhost:5173']
 
 CORS_ALLOW_ALL_ORIGINS = True
-
+CSRF_TRUSTED_ORIGINS = ['localhost','https://web-production-8bdfa.up.railway.app']
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 print(f"{ os.getenv('DATABASE_NAME')=}")
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DATABASE_NAME'),
