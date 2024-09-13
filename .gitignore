@@ -3,3 +3,7 @@ __pycache__
 mysite/models/
 mysite/models/*
 .env
+mysite/media/image/
+mysite/media/image/*
+mysite/media/predictions/
+mysite/media/predictions/*
