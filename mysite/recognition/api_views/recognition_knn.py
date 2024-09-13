@@ -14,6 +14,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 def recognition_knn(request):
     try:
         client = request.auth.get('client')
+        print(f"{client=}")
         unknow_face = request.FILES['face']
         file_name = unknow_face.name
         file_extension = file_name.split('.')[-1]
@@ -23,10 +24,10 @@ def recognition_knn(request):
         people_training =  Face.objects.filter(client = client, status=StatusFace.ACT)
         model_save_path = f"{MODEL_ROOT}/{client}/trained_knn_model.clf"
         
-        train( people_training , model_save_path=model_save_path, n_neighbors=3, client_id = client )
+        model_knn = train( people_training , n_neighbors=3, client_id = client )
         print("Training complete!")
 
-        predictions = predict(unknow_face, model_path=model_save_path)
+        predictions = predict(unknow_face, knn_clf=model_knn)
 
         # Print results on the console
         for name, (top, right, bottom, left) in predictions:
