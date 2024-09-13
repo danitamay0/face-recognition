@@ -29,9 +29,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-COPY mysite/ .
+COPY mysite/ /app/mysite/
 COPY mysite/requirements.txt /app/
-COPY ./Procfile .
+
 COPY ./runtime.txt .
 COPY ./entrypoint.sh .
 RUN pip install -r requirements.txt

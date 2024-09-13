@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo "cd server"
+cd mysite/
+
 echo Ejecuta las migraciones
 python manage.py migrate --noinput
 
