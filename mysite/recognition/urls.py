@@ -16,8 +16,8 @@ from django.urls import path
 router.register(r'face', recognition) """
 
 urlpatterns = [
-    path('recognition/', recognition, name='recognition'),
-    path('recognition-knn/', recognition_knn, name='recognition_knn'),
-    path('charge-faces/', charge_faces_test, name='recognition_knn'),
+    path('recognition', recognition, name='recognition'),
+    path('recognition-knn', recognition_knn, name='recognition_knn'),
+    path('charge-faces', charge_faces_test, name='recognition_knn'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
