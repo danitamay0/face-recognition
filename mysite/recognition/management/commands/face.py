@@ -40,6 +40,8 @@ class Command(BaseCommand):
                 continue
 
             name = person.replace(".jpg", " TRAINING")
+            name = person.replace(".png", " TRAINING")
+            name = person.replace(".jpeg", " TRAINING")
             if face_encodings:
                 client = Client.objects.get(id = client_id)
                 
