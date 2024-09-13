@@ -33,6 +33,11 @@ COPY mysite/ .
 COPY mysite/requirements.txt /app/
 COPY ./Procfile .
 COPY ./runtime.txt .
+COPY ./entrypoint.sh .
 RUN pip install -r requirements.txt
-RUN python manage.py migrate --noinput
-CMD ["gunicorn", "mysite.wsgi", "--bind", "0.0.0.0:8000"]
+
+RUN chmod +x /app/entrypoint.sh
+# Expose port 8000 for the Django development server
+EXPOSE 8000
+
+ENTRYPOINT ["sh", "/app/entrypoint.sh"]
