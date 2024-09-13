@@ -3,7 +3,8 @@
 
 from rest_framework import routers
 
-from .api_views.recognition_svm import recognition_svm
+from .api_views.charge_faces_test import charge_faces_test
+
 from .api_views.recognition import recognition
 from .api_views.recognition_knn import recognition_knn
 # Serializers define the API representation.
@@ -16,7 +17,7 @@ router.register(r'face', recognition) """
 
 urlpatterns = [
     path('recognition/', recognition, name='recognition'),
-    path('recognition-svm/', recognition_svm, name='recognition_svm'),
     path('recognition-knn/', recognition_knn, name='recognition_knn'),
+    path('charge-faces/', charge_faces_test, name='recognition_knn'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
