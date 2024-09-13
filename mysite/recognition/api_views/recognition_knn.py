@@ -40,7 +40,7 @@ def recognition_knn(request):
             if face_:
                 print(face_)
                 face_prediction=face_.id
-                FacePredict( found_face=False, face_id=face_prediction, client_id = client, image=unknow_face ).save()
+                FacePredict( found_face=True, face_id=face_prediction, client_id = client, image=unknow_face ).save()
                 return Response({
                             "user":{"id":face_.id, "metadata":face_.metadata, "nombre":face_.name},
                             "detected": True

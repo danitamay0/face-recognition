@@ -9,7 +9,6 @@ import numpy as np
 @receiver(post_save, sender=FaceTraining)
 def generate_face_encoding(sender, instance, **kwargs):
     if not instance.face_encoding:  # Solo generar si no existe ya una codificación
-        print("here")
         #image = face_recognition.load_image_file(instance.image.path)
         #print("facing", image)
         pil_image = Image.open(instance.image.path)
