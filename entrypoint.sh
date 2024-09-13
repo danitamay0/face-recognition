@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# My site
 echo "cd server"
 cd mysite/
 

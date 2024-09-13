@@ -33,11 +33,11 @@ COPY mysite/ /app/mysite/
 COPY mysite/requirements.txt /app/
 
 COPY ./runtime.txt .
-COPY ./entrypoint.sh .
+COPY entrypoint.sh /app/entrypoint.sh
 RUN pip install -r requirements.txt
 
 RUN chmod +x /app/entrypoint.sh
 # Expose port 8000 for the Django development server
 EXPOSE 8000
 
-ENTRYPOINT ["sh", "/app/entrypoint.sh"]
+CMD ["sh", "/app/entrypoint.sh"]
