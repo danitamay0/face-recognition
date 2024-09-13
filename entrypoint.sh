@@ -1,9 +1,11 @@
 #!/bin/sh
 
-echo "running collecstatic"
-poetry run python manage.py collectstatic --noinput
-echo "running migrate"
-poetry run python manage.py migrate
+echo Ejecuta las migraciones
+python manage.py migrate --noinput
+
+echo Recolecta archivos estáticos
+python manage.py collectstatic --noinput
 
 echo "running server"
-poetry run python manage.py runserver 0.0.0.0:8000
+
+exec gunicorn mysite.wsgi:application --bind 0.0.0.0:8000
