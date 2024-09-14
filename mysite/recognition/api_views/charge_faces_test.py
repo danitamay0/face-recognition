@@ -43,7 +43,7 @@ def charge_faces_test(request):
                 continue
             headers = {"Authorization": f"Bearer {request.auth}"}
             r = requests.post(f"{DOMAIN}/faces/charge-face",
-                            data={'face': image_path, 'name': name},
+                            data={'face': person, 'name': name},
                             headers=headers)
             print(f'{r.text=}')
             
@@ -59,8 +59,10 @@ def charge_face(request):
     try:
         client_id = request.auth.get('client')
         person = request.data['name']
-        unknow_face = request.data['face']
-
+        face_ = request.data['face']
+        
+        dir_ = os.path.join(MEDIA_ROOT, f"training_humans/")
+        unknow_face = os.path.join(dir_, face_)
         if not unknow_face:
             return Response('Es obligatoria la imagen', 400)
 
