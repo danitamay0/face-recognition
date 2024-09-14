@@ -168,3 +168,5 @@ ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 ADMIN_CSS = {
     'all': ('admin_custom.css',),
 }
+
+DOMAIN = 'https://web-production-8bdfa.up.railway.app'
