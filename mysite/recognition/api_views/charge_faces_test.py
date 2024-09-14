@@ -24,10 +24,11 @@ def charge_faces_test(request):
     try:
         client_id = request.auth.get('client')
        
+       
         dir_ = os.path.join(MEDIA_ROOT, f"training_humans/")
         pix = os.listdir(dir_)
         pos = int(request.data['pos'])
-        newarr = np.array_split(pix, 5)
+        newarr = np.array_split(pix, 20)
         print(newarr[pos])
         
         
@@ -36,7 +37,9 @@ def charge_faces_test(request):
             name = person.replace(".png", " TRAINING")
             name = person.replace(".jpeg", " TRAINING")
             image_path = os.path.join(dir_, person)
+            print(f"sending: {image_path=}")
             if not os.path.isfile(image_path):
+                print("is not file: ", image_path)
                 continue
             headers = {"Authorization": f"Bearer {request.auth}"}
             r = requests.post(f"{DOMAIN}/faces/charge-face",
@@ -77,9 +80,11 @@ def charge_face(request):
             
             face = Face(client_id=client_id, name=name)
             face.save()
-            fcds = ','.join([str(val) for val in face_encodings[0]])
-            django_file = unknow_face
-            FaceTraining(face=face, image=django_file, face_encoding=fcds).save()
+               
+            with open(unknow_face, 'rb') as img_file:
+                    fcds = ','.join([str(val) for val in face_encodings[0]])
+                    django_file = File(img_file)
+                    FaceTraining(face=face, image=django_file, face_encoding=fcds).save()
     except Exception as e:
         print("Error", e)
         return Response("Error", 500)
