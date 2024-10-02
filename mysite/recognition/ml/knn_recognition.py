@@ -33,25 +33,27 @@ def train(faces, client_id, model_save_path=None, n_neighbors=None, knn_algo='ba
     """
     X = []
     y = []
-    
-    
 
     for face in faces:
-        face_trains = FaceTraining.objects.filter(face=face.id)
+        try:
+            face_trains = FaceTraining.objects.filter(face=face.id)
 
-        # Loop through each training image for the current person
-        for face_train in face_trains:
-            # Convert the face_encoding string to a list of floats
-            face_bounding_boxes = [float(val) for val in face_train.face_encoding.split(',')]
-            if len(face_bounding_boxes) == 0:
-                # If there are no face encodings, skip the image
-                if verbose:
-                    print(f"Image {face_train} not suitable for training: Didn't find a face")
-            else:
-                # Add face encoding for current image to the training set
-                X.append(face_bounding_boxes)
-                y.append(str(face.id))  # Use face.id instead of faces.id
+            # Loop through each training image for the current person
+            for face_train in face_trains:
+                # Convert the face_encoding string to a list of floats
+                if face_train.face_encoding:
+                    face_bounding_boxes = [float(val) for val in face_train.face_encoding.split(',')]
+                    if len(face_bounding_boxes) == 0:
+                        # If there are no face encodings, skip the image
+                        if verbose:
+                            print(f"Image {face_train} not suitable for training: Didn't find a face")
+                    else:
+                        # Add face encoding for current image to the training set
+                        X.append(face_bounding_boxes)
+                        y.append(str(face.id))  # Use face.id instead of faces.id
     # Check if X is empty
+        except Exception as e:
+            print(f"error face: {face} :-> {e}")
     if len(X) == 0:
         raise ValueError("No training data found. Ensure that face encodings are available.")
 
@@ -66,7 +68,7 @@ def train(faces, client_id, model_save_path=None, n_neighbors=None, knn_algo='ba
 
     # Save the trained KNN classifier
     if model_save_path is not None:
-        
+
         if  not os.path.exists(f"{MODEL_ROOT}/{client_id}"):
             os.mkdir(f"{MODEL_ROOT}/{client_id}")
         with open(model_save_path, 'wb') as f:
@@ -89,7 +91,7 @@ def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.54):
     :return: a list of names and face locations for the recognized faces in the image: [(name, bounding box), ...].
         For faces of unrecognized persons, the name 'unknown' will be returned.
     """
-  
+
     """ if not os.path.isfile(X_img_path) or os.path.splitext(X_img_path)[1][1:] not in ALLOWED_EXTENSIONS:
         raise Exception("Invalid image path: {}".format(X_img_path))
     """
@@ -114,7 +116,7 @@ def predict(X_img_path, knn_clf=None, model_path=None, distance_threshold=0.54):
 
     # Use the KNN model to find the best matches for the test face
     closest_distances = knn_clf.kneighbors(faces_encodings, n_neighbors=1)
-    print(f"{closest_distances=}")
+
     are_matches = [closest_distances[0][i][0] <= distance_threshold for i in range(len(X_face_locations))]
 
     # Predict classes and remove classifications that aren't within the threshold

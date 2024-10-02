@@ -6,3 +6,4 @@ mysite/media/image/
 mysite/media/image/*
 mysite/media/predictions/
 mysite/media/predictions/*
+.idea/*

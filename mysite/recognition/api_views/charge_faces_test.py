@@ -28,14 +28,13 @@ def charge_faces_test(request):
         dir_ = os.path.join(MEDIA_ROOT, f"training_humans/")
         pix = os.listdir(dir_)
         pos = int(request.data['pos'])
-        newarr = np.array_split(pix, 20)
-        print(newarr[pos])
+        newarr = np.array_split(pix, 20) # len 14 pos 13
+        print(pos, len(newarr[pos]), newarr[pos])
         
-        
-        for person in pix:
+        for person in newarr[pos]:
             name = person.replace(".jpg", " TRAINING")
-            name = person.replace(".png", " TRAINING")
-            name = person.replace(".jpeg", " TRAINING")
+            name = name.replace(".png", " TRAINING")
+            name = name.replace(".jpeg", " TRAINING")
             image_path = os.path.join(dir_, person)
             print(f"sending: {image_path=}")
             if not os.path.isfile(image_path):
