@@ -1,26 +1,13 @@
 # ViewSets define the view behavior.
-
-import requests
-from mysite.settings import DOMAIN, MEDIA_ROOT
 import time
 from rest_framework.decorators import api_view, permission_classes
-
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 import os
-import face_recognition
-
 from mysite.settings import MEDIA_ROOT
 from recognition.models import Face, FaceTraining
-
-from django.core.files import File
-from sklearn.model_selection import train_test_split
-import numpy as np
 from recognition.ml.knn_recognition import  predict, train
-
 from recognition.models import StatusFace
-
 from sklearn.metrics import confusion_matrix, accuracy_score
 
 @api_view(['GET'])
@@ -30,8 +17,8 @@ def stats_knn(request):
     print("Training KNN classifier...")
     client = request.auth.get('client')
     people_training = Face.objects.filter(client=client, status=StatusFace.ACT)
-    known_faces_path = f"{MEDIA_ROOT}/test_dataset/known_faces"
-    unknown_faces_path = f"{MEDIA_ROOT}/test_dataset/unknown_faces"
+    known_faces_path = f"{MEDIA_ROOT}test_dataset/known_faces"
+    unknown_faces_path = f"{MEDIA_ROOT}test_dataset/unknown_faces"
     model_knn = train(people_training, n_neighbors=3, client_id=client)
     test_dir = os.listdir(known_faces_path)
     X_test = []
