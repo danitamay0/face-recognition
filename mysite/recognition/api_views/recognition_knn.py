@@ -63,6 +63,6 @@ def recognition_knn(request):
     
     except Exception as e:
         print("Error", e)
-        return Response("Error", 500)
+        return Response(f"Error: {e=}", 500)
 
 
